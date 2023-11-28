@@ -34,6 +34,15 @@ STQueue *createSTQueue(int argc, char *argv[], int headPos) {
 
     // This would be done differently for a real program, since the queue would need to keep up with active requests
     // (e.g some kind of auto-clear function to clear the queue after a certain size)
+
+    // Address head position greater than 0
+    for (auto &request : requests) {
+        if (request.first == 0 && request.second->track() == headPos){
+            queue->addRequest(request.second, 0, 0);
+            request.first = 1; // Mark the request as added
+        }
+    }
+
     for (auto &request : requests) {
         if (request.first == 0) { // Add untouched requests to the queue
             queue->addRequest(request.second, 0, 0);
