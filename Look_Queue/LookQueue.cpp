@@ -3,39 +3,41 @@
 //
 
 #include "LookQueue.h"
+#include "../CommonFiles/Request.hpp"
 
 void LookQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector) {
-    LookQueueNode *newNode = new LookQueueNode(request);
-    LookQueueNode *currNode = head;
-    LookQueueNode *prevNode = nullptr;
-    bool added = false;
 
-    if (head == nullptr) {
-        head = newNode;
-        tail = newNode;
-        return;
+}
+
+Request *LookQueue::getRequest() {
+    if (empty()){
+        std::cout << "Calling LookQueueNode::getRequest() on an empty queue. Terminating...\n";
+        exit(1);
     }
-
-    while (currNode != nullptr) {
-        if (currNode->request()->track() > cRWHeadTrack) {
-            if (prevNode == nullptr) {
-                newNode->next(currNode);
-                head = newNode;
-                added = true;
-                break;
-            } else {
-                newNode->next(currNode);
-                prevNode->next(newNode);
-                added = true;
-                break;
-            }
-        }
-        prevNode = currNode;
-        currNode = currNode->next();
+    LookQueueNode *lookNode = head;
+    Request *request = lookNode->request();
+    head = head->next();
+    if (head == nullptr){
+        tail = nullptr;
     }
+    delete lookNode;
+    return request;
+}
 
-    if (!added) {
-        tail->next(newNode);
-        tail = newNode;
+bool LookQueue::empty() {
+    return head == nullptr;
+}
+
+void LookQueue::print() {
+    for (auto cur = head; cur; cur = cur->next()){
+        cur->request()->print();
+    }
+}
+
+LookQueue::~LookQueue() {
+    while (head != nullptr){
+        LookQueueNode *node = head;
+        head = node->next();
+        delete node;
     }
 }

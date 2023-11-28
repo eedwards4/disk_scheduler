@@ -6,7 +6,6 @@
 #define DISKSIM_X_LOOKQUEUE_H
 
 #include <iostream>
-
 #include "../CommonFiles/Queue.hpp"
 #include "LookQueueNode.h"
 
