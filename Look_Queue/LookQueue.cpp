@@ -1,12 +1,19 @@
 //
-// Created by evane on 11/27/2023.
+// Created by Ethan Edwards on 11/27/2023.
 //
 
 #include "LookQueue.h"
 #include "../CommonFiles/Request.hpp"
 
 void LookQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector) {
-
+    LookQueueNode *node = new LookQueueNode(request);
+    if (empty()){
+        head = node;
+        tail = node;
+    } else {
+        tail->next(node);
+        tail = node;
+    }
 }
 
 Request *LookQueue::getRequest() {

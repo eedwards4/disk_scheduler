@@ -5,7 +5,7 @@
 #include "../CommonFiles/Request.hpp"
 
 void STQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector) {
-    STQueueNode *stNode = new STQueueNode(request, cRWHeadTrack, cRWHeadSector);
+    STQueueNode *stNode = new STQueueNode(request);
     if (empty()){
         head = stNode;
         tail = stNode;
