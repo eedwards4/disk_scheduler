@@ -54,7 +54,6 @@ void constituize(int argc, char* argv[], int headPos, std::priority_queue<std::p
 }
 
 int main(int argc, char *argv[]) {
-    std::cout << "Look wait queue -- Main function.\n";
     const int randomTest = false;
     int headPos = 20;
     bool headDirection = true; // false = out, true = in
