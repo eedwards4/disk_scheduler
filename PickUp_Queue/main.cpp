@@ -5,7 +5,6 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#include <vector>
 
 #include "../CommonFiles/Request.hpp"
 #include "PickUpQueue.h"

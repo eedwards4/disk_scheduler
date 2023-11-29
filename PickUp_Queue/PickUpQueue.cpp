@@ -6,14 +6,28 @@
 #include "../CommonFiles/Request.hpp"
 
 void PickUpQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector) {
-    PickUpQueueNode *stNode = new PickUpQueueNode(request);
+    PickUpQueueNode *PickUpNode = new PickUpQueueNode(request);
     if (empty()){
-        head = stNode;
-        tail = stNode;
+        head = PickUpNode;
+        tail = PickUpNode;
+        return;
+    } else if (request->track() == cRWHeadTrack){
+        PickUpNode->next(head);
+        head = PickUpNode;
+        return;
     } else {
-        tail->next(stNode);
-        tail = stNode;
+        PickUpQueueNode *tmp = head;
+        while (tmp != tail){
+            if (tmp->request()->track() == request->track() && tmp->next()->request()->track() != request->track()){
+                PickUpNode->next(tmp->next());
+                tmp->next(PickUpNode);
+                return;
+            }
+            tmp = tmp->next();
+        }
     }
+    tail->next(PickUpNode);
+    tail = PickUpNode;
 }
 
 Request *PickUpQueue::getRequest() {

@@ -11,11 +11,13 @@ class LookQueueNode {
 public:
     LookQueueNode(Request *req);
     LookQueueNode *next();
+    LookQueueNode *prev();
     void next(LookQueueNode *node);
+    void prev(LookQueueNode *node);
     Request *request();
 
 private:
-    LookQueueNode *_next;
+    LookQueueNode *_next, *_prev;
     Request *_request;
 
 };

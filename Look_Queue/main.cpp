@@ -36,7 +36,7 @@ LookQueue *makeOutQueue(std::vector<std::pair<bool, Request*>> requests) {
 }
 
 
-LookQueue *createLookQueue(int argc, char* argv[], int headPos, LookQueue* &in, LookQueue* &out){
+LookQueue *createLookQueue(int argc, char* argv[], int headPos){
     if (argc != 2) {
         std::cout << "usage: " << argv[0] << " nameOfAnInputFile\n";
         exit(1);
@@ -52,14 +52,14 @@ LookQueue *createLookQueue(int argc, char* argv[], int headPos, LookQueue* &in, 
 
     LookQueue *queue = new LookQueue();
 
-    // Create vector of all requests
-    std::vector<Request*> requests;
-    int time, track, sector;
+    int time, track, sector, i = 0;
     while(inputStream >> time && inputStream >> track && inputStream >> sector) {
         auto *request = new Request(time, track, sector);
-        queue->addRequest(request, headPos, sector);
+        queue->addRequest(request, headPos, i);
+        i++;
     }
 
+    /*
     std::vector<std::pair<bool, Request*>> inRequests;
     std::vector<std::pair<bool, Request*>> outRequests;
     // Split vector into constituent unordered vectors (in/out)
@@ -69,38 +69,27 @@ LookQueue *createLookQueue(int argc, char* argv[], int headPos, LookQueue* &in, 
         } else {
             outRequests.emplace_back(0, request);
         }
-    }
-    // Convert to queues
-    in = makeInQueue(inRequests);
-    out = makeOutQueue(outRequests);
+    }*/
+
+    return queue;
 }
 
 int main(int argc, char *argv[]) {
     const int randomTest = false;
     int headPos = 20;
     bool headDirection = true; // false = out, true = in
-    LookQueue *in = nullptr;
-    LookQueue *out= nullptr;
+    LookQueue *queue = nullptr;
 
     if (randomTest){
         // placeholder for random test
     }
     else {
-        createLookQueues(argc, argv, headPos, in, out);
+        queue = createLookQueue(argc, argv, headPos);
     }
 
-    std::cout << "Read/write head was set to " << headPos << " when inserting requests to the ST Queue." << std::endl;
-    std::cout << "Direction is IN" << std::endl;
-    std::cout << "Current queue contains." << std::endl;
-    in->print();
-    if (out->empty()){
-        std::cout << "nextQueue is empty." << std::endl;
-    } else {
-        std::cout << "nextQueue contains." << std::endl;
-        out->print();
-    }
+    std::cout << "Read/write head was set to " << headPos << " when inserting requests to the Look Queue." << std::endl;
+    queue->print();
 
-    delete in;
-    delete out;
+    delete queue;
     return 0;
 }

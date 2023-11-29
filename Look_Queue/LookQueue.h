@@ -13,7 +13,7 @@ class Request;
 
 class LookQueue : public Queue {
 public:
-    LookQueue() : head{nullptr}, tail{nullptr} {}
+    LookQueue() : in_head{nullptr}, in_tail{nullptr}, out_head{nullptr}, out_tail{nullptr} {}
     virtual void addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector);
     virtual Request *getRequest();
     virtual bool empty();
@@ -21,7 +21,7 @@ public:
     virtual ~LookQueue();
 
 private:
-    LookQueueNode *head, *tail;
+    LookQueueNode *in_head, *in_tail, *out_head, *out_tail;
 
 };
 
