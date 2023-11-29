@@ -36,7 +36,7 @@ CLookQueue *createCLookQueue(int argc, char* argv[], int headPos){
 }
 
 int main(int argc, char *argv[]) {
-    int headPos = 20;
+    int headPos = 0;
     CLookQueue *queue = nullptr;
     queue = createCLookQueue(argc, argv, headPos);
     queue->print();
