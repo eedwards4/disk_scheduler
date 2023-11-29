@@ -36,7 +36,7 @@ LookQueue *makeOutQueue(std::vector<std::pair<bool, Request*>> requests) {
 }
 
 
-void createLookQueues(int argc, char* argv[], int headPos, LookQueue* &in, LookQueue* &out){
+LookQueue *createLookQueue(int argc, char* argv[], int headPos, LookQueue* &in, LookQueue* &out){
     if (argc != 2) {
         std::cout << "usage: " << argv[0] << " nameOfAnInputFile\n";
         exit(1);
@@ -50,12 +50,14 @@ void createLookQueues(int argc, char* argv[], int headPos, LookQueue* &in, LookQ
         exit(1);
     }
 
+    LookQueue *queue = new LookQueue();
+
     // Create vector of all requests
     std::vector<Request*> requests;
     int time, track, sector;
     while(inputStream >> time && inputStream >> track && inputStream >> sector) {
         auto *request = new Request(time, track, sector);
-        requests.emplace_back( request);
+        queue->addRequest(request, headPos, sector);
     }
 
     std::vector<std::pair<bool, Request*>> inRequests;
