@@ -22,6 +22,7 @@ public:
 
 private:
     CLookQueueNode *in_head, *in_tail, *out_head, *out_tail;
+    int headPos = -1;
 
 };
 

@@ -7,7 +7,8 @@
 
 void LookQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector) {
     LookQueueNode *lookNode = new LookQueueNode(request);
-    // std::cout << "Working on request " << cRWHeadSector << std::endl; // DEBUG
+    // Set head position for print
+    if (headPos == -1){headPos = cRWHeadTrack;}
     if (request->track() >= cRWHeadTrack) { // Add stuff to IN queue
         if (in_head == nullptr){ // First object
             in_head = lookNode;
@@ -110,13 +111,14 @@ bool LookQueue::empty() {
 }
 
 void LookQueue::print() {
+    std::cout << "Read/write head was set to " << headPos << " when inserting requests to the ST Queue." << std::endl;
     std::cout << "Direction is IN" << std::endl;
     std::cout << "Current queue contains." << std::endl;
     for (auto cur = in_head; cur; cur = cur->next()){
         cur->request()->print();
     }
     if (out_head != nullptr){
-        std::cout << "nextQueue contains." << std::endl;
+        std::cout << "Next queue contains." << std::endl;
         for (auto cur = out_head; cur; cur = cur->next()){
             cur->request()->print();
         }

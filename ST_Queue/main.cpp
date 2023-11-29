@@ -34,22 +34,10 @@ STQueue *createSTQueue(int argc, char *argv[], int headPos) {
 }
 
 int main(int argc, char *argv[]) {
-    const int randomTest = false;
     int headPos = 0;
     STQueue *queue = nullptr;
-
-    if (randomTest){
-        // placeholder for random test
-    }
-    else {
-        queue = createSTQueue(argc, argv, headPos);
-    }
-
-    std::cout << "Read/write head was set to " << headPos << " when inserting requests to the ST Queue." << std::endl;
-    std::cout << "Printing the nodes in ST Queue starts..." << std::endl;
+    queue = createSTQueue(argc, argv, headPos);
     queue->print();
-    std::cout << "Printing the nodes in ST Queue ends..." << std::endl;
     delete queue;
-
     return 0;
 }

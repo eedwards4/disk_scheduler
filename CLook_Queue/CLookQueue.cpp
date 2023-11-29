@@ -7,7 +7,8 @@
 
 void CLookQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector) {
     CLookQueueNode *lookNode = new CLookQueueNode(request);
-    // std::cout << "Working on request " << cRWHeadSector << std::endl; // DEBUG
+    // Set head position for print
+    if (headPos == -1){headPos = cRWHeadTrack;}
     if (request->track() >= cRWHeadTrack) { // Add stuff to IN queue
         if (in_head == nullptr){ // First object
             in_head = lookNode;
@@ -110,6 +111,7 @@ bool CLookQueue::empty() {
 }
 
 void CLookQueue::print() {
+    std::cout << "Read/write head was set to " << headPos << " when inserting requests to the Look Queue." << std::endl;
     std::cout << "Current queue contains." << std::endl;
     for (auto cur = in_head; cur; cur = cur->next()){
         cur->request()->print();

@@ -9,7 +9,7 @@
 #include "../CommonFiles/Request.hpp"
 #include "PickUpQueue.h"
 
-PickUpQueue *createPickUpQueue(int argc, char *argv[]) {
+PickUpQueue *createPickUpQueue(int argc, char *argv[], int headPos) {
     if (argc != 2) {
         std::cout << "usage: " << argv[0] << " nameOfAnInputFile\n";
         exit(1);
@@ -28,14 +28,15 @@ PickUpQueue *createPickUpQueue(int argc, char *argv[]) {
     int time, track, sector;
     while(inputStream >> time && inputStream >> track && inputStream >> sector) {
         auto *request = new Request(time, track, sector);
-        queue->addRequest(request, 0, 0);
+        queue->addRequest(request, headPos, 0);
     }
 
     return queue;
 }
 
 int main(int argc, char *argv[]) {
-    auto *queue = createPickUpQueue(argc, argv);
+    int headPos = 0;
+    auto *queue = createPickUpQueue(argc, argv, headPos);
     queue->print();
     delete queue;
     return 0;

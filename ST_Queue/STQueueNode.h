@@ -1,5 +1,5 @@
 //
-// Created by evane on 11/27/2023.
+// Created by Ethan Edwards on 11/27/2023.
 //
 
 #ifndef DISKSIM_X_STQUEUENODE_H

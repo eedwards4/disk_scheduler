@@ -6,6 +6,8 @@
 
 void STQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector) {
     STQueueNode *stNode = new STQueueNode(request);
+    // Set head position for print
+    if (headPos == -1){headPos = cRWHeadTrack;}
     if (empty()){
         head = stNode;
         tail = stNode;
@@ -49,9 +51,12 @@ bool STQueue::empty() {
 }
 
 void STQueue::print() {
+    std::cout << "Read/write head was set to " << headPos << " when inserting requests to the ST Queue." << std::endl;
+    std::cout << "Printing the nodes in ST Queue starts..." << std::endl;
     for (auto cur = head; cur; cur = cur->next()){
         cur->request()->print();
     }
+    std::cout << "Printing the nodes in ST Queue ends..." << std::endl;
 }
 
 STQueue::~STQueue() {

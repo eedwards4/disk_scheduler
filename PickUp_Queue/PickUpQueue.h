@@ -14,7 +14,7 @@ class Request;
 
 class PickUpQueue : public Queue {
 public:
-    PickUpQueue() : head{nullptr}, tail{nullptr} {}
+    PickUpQueue() : pickup_head{nullptr}, pickup_tail{nullptr}, detritus_head{nullptr}, detritus_tail{nullptr} {}
     virtual void addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector);
     virtual Request *getRequest();
     virtual bool empty();
@@ -22,7 +22,8 @@ public:
     virtual ~PickUpQueue();
 
 private:
-    PickUpQueueNode *head, *tail;
+    PickUpQueueNode *pickup_head, *pickup_tail, *detritus_head, *detritus_tail;
+    int headPos = -1;
 
 };
 

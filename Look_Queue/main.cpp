@@ -62,21 +62,10 @@ LookQueue *createLookQueue(int argc, char* argv[], int headPos){
 }
 
 int main(int argc, char *argv[]) {
-    const int randomTest = false;
-    int headPos = 20;
-    bool headDirection = true; // false = out, true = in
+    int headPos = 0;
     LookQueue *queue = nullptr;
-
-    if (randomTest){
-        // placeholder for random test
-    }
-    else {
-        queue = createLookQueue(argc, argv, headPos);
-    }
-
-    std::cout << "Read/write head was set to " << headPos << " when inserting requests to the Look Queue." << std::endl;
+    queue = createLookQueue(argc, argv, headPos);
     queue->print();
-
     delete queue;
     return 0;
 }
