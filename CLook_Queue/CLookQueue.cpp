@@ -2,11 +2,11 @@
 // Created by Ethan Edwards on 11/27/2023.
 //
 
-#include "LookQueue.h"
+#include "CLookQueue.h"
 #include "../CommonFiles/Request.hpp"
 
-void LookQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector) {
-    LookQueueNode *lookNode = new LookQueueNode(request);
+void CLookQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector) {
+    CLookQueueNode *lookNode = new CLookQueueNode(request);
     // std::cout << "Working on request " << cRWHeadSector << std::endl; // DEBUG
     if (request->track() >= cRWHeadTrack) { // Add stuff to IN queue
         if (in_head == nullptr){ // First object
@@ -15,7 +15,7 @@ void LookQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector
             return;
         }
         // Handle duplicate objects
-        LookQueueNode *tmp = in_head;
+        CLookQueueNode *tmp = in_head;
         while (tmp != in_tail){
             if (tmp->request()->track() == request->track() && tmp->next()->request()->track() > request->track()){
                 lookNode->next(tmp->next());
@@ -50,7 +50,7 @@ void LookQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector
             return;
         }
         // Handle duplicate objects
-        LookQueueNode *tmp = out_head;
+        CLookQueueNode *tmp = out_head;
         while (tmp != out_tail){
             if (tmp->request()->track() == request->track() && tmp->next()->request()->track() > request->track()){
                 lookNode->next(tmp->next());
@@ -61,13 +61,13 @@ void LookQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector
         }
         // Handle new objects
         tmp = out_head;
-        if (tmp->request()->track() < request->track()){ // Handle head change
+        if (tmp->request()->track() > request->track()){ // Handle head change
             lookNode->next(tmp);
             out_head = lookNode;
             return;
         }
         while (tmp != out_tail){
-            if (tmp->next()->request()->track() < request->track()){
+            if (tmp->next()->request()->track() > request->track()){
                 lookNode->next(tmp->next());
                 tmp->next(lookNode);
                 return;
@@ -80,13 +80,13 @@ void LookQueue::addRequest(Request *request, int cRWHeadTrack, int cRWHeadSector
     }
 }
 
-Request *LookQueue::getRequest() {
+Request *CLookQueue::getRequest() {
     if (empty()){
-        std::cout << "Calling LookQueueNode::getRequest() on an empty queue. Terminating...\n";
+        std::cout << "Calling CLookQueueNode::getRequest() on an empty queue. Terminating...\n";
         exit(1);
     }
     if (in_head != nullptr){
-        LookQueueNode *lookNode = in_head;
+        CLookQueueNode *lookNode = in_head;
         Request *request = lookNode->request();
         in_head = in_head->next();
         if (in_head == nullptr){
@@ -95,7 +95,7 @@ Request *LookQueue::getRequest() {
         delete lookNode;
         return request;
     }
-    LookQueueNode *lookNode = out_head;
+    CLookQueueNode *lookNode = out_head;
     Request *request = lookNode->request();
     out_head = out_head->next();
     if (out_head == nullptr){
@@ -105,32 +105,31 @@ Request *LookQueue::getRequest() {
     return request;
 }
 
-bool LookQueue::empty() {
+bool CLookQueue::empty() {
     return in_head == nullptr && out_head == nullptr;
 }
 
-void LookQueue::print() {
-    std::cout << "Direction is IN" << std::endl;
+void CLookQueue::print() {
     std::cout << "Current queue contains." << std::endl;
     for (auto cur = in_head; cur; cur = cur->next()){
         cur->request()->print();
     }
     if (out_head != nullptr){
-        std::cout << "nextQueue contains." << std::endl;
+        std::cout << "Next queue contains." << std::endl;
         for (auto cur = out_head; cur; cur = cur->next()){
             cur->request()->print();
         }
     } else{std::cout << "nextQueue is empty." << std::endl;}
 }
 
-LookQueue::~LookQueue() {
+CLookQueue::~CLookQueue() {
     while (in_head != nullptr){
-        LookQueueNode *node = in_head;
+        CLookQueueNode *node = in_head;
         in_head = node->next();
         delete node;
     }
     while (out_head != nullptr){
-        LookQueueNode *node = out_head;
+        CLookQueueNode *node = out_head;
         out_head = node->next();
         delete node;
     }

@@ -17,7 +17,7 @@ public:
     Request *request();
 
 private:
-    LookQueueNode *_next, *_prev;
+    LookQueueNode *_next;
     Request *_request;
 
 };

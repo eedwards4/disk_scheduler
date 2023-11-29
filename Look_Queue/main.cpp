@@ -3,12 +3,11 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#include <vector>
-#include <algorithm>
 
 #include "../CommonFiles/Request.hpp"
 #include "LookQueue.h"
 
+/* this does nothing without vector and algorithm
 bool compareRequestAsc(std::pair<bool, Request*> a, std::pair<bool, Request*> b) {
     return a.second->track() < b.second->track();
 }
@@ -34,7 +33,7 @@ LookQueue *makeOutQueue(std::vector<std::pair<bool, Request*>> requests) {
     }
     return queue;
 }
-
+*/
 
 LookQueue *createLookQueue(int argc, char* argv[], int headPos){
     if (argc != 2) {
@@ -58,18 +57,6 @@ LookQueue *createLookQueue(int argc, char* argv[], int headPos){
         queue->addRequest(request, headPos, i);
         i++;
     }
-
-    /*
-    std::vector<std::pair<bool, Request*>> inRequests;
-    std::vector<std::pair<bool, Request*>> outRequests;
-    // Split vector into constituent unordered vectors (in/out)
-    for (auto &request : requests) {
-        if (request->track() >= headPos){
-            inRequests.emplace_back(0, request);
-        } else {
-            outRequests.emplace_back(0, request);
-        }
-    }*/
 
     return queue;
 }

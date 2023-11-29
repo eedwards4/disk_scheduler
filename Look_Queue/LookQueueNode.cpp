@@ -12,16 +12,8 @@ LookQueueNode *LookQueueNode::next() {
     return _next;
 }
 
-LookQueueNode *LookQueueNode::prev() {
-    return _prev;
-}
-
 void LookQueueNode::next(LookQueueNode *node) {
     _next = node;
-}
-
-void LookQueueNode::prev(LookQueueNode *node) {
-    _prev = node;
 }
 
 Request *LookQueueNode::request() {
