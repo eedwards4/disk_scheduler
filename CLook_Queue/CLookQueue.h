@@ -2,8 +2,8 @@
 // Created by evane on 11/28/2023.
 //
 
-#ifndef DISKSIM_X_LOOKQUEUE_H
-#define DISKSIM_X_LOOKQUEUE_H
+#ifndef DISKSIM_X_CLOOKQUEUE_H
+#define DISKSIM_X_CLOOKQUEUE_H
 
 #include <iostream>
 #include "../CommonFiles/Queue.hpp"
@@ -27,4 +27,4 @@ private:
 };
 
 
-#endif //DISKSIM_X_LOOKQUEUE_H
+#endif //DISKSIM_X_CLOOKQUEUE_H

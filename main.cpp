@@ -1,6 +1,25 @@
 //
 //
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <vector>
 
+#include "eventNode.h"
+#include "eventqueue.h"
+
+int main(int argc, char* argv[]){
+    if (!(argc == 2)){
+        std::cout << "Usage: ./disksim <input file>" << std::endl;
+        return 1;
+    }
+    std::string inputFileName = argv[1];
+    auto *eQueue = new eventqueue();
+    eQueue->run(inputFileName, 0);
+    return 0;
+}
+
+/*
 class Disk {
 public:
     // a disk is identified by its wait-queue and the name of
@@ -47,7 +66,5 @@ int main() {
 
                   disk->processDiskDoneEvent(eQueue, ...)
     }
-
-
-
 }
+*/
