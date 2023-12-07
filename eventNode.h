@@ -7,14 +7,33 @@
 
 #include "CommonFiles/Request.hpp"
 
-class TimerEvent;
+class TimerEvent{
+public:
+    TimerEvent(int timer) {timerEvent = timer;}
+    int get() const { return timerEvent; }
+
+private:
+    int timerEvent;
+};
 class RequestEvent {
 public:
     RequestEvent(Request *r) {request = r;}
     Request *getRequest() { return request; }
+    void setSeekTime(int n) {seekTime = n;}
+    void setRotationTime(int n) {rotationTime = n;}
+    void setTransferTime(int n) {transferTime = n;}
+    int getST() {return seekTime;}
+    int getRT() {return rotationTime;}
+    int getTT() {return transferTime;}
+    int getAT() {
+        return seekTime + rotationTime + transferTime;
+    }
 
 private:
     Request *request = nullptr;
+    int seekTime = 0,
+    rotationTime = 0,
+    transferTime = 0;
 };
 class DiskDoneEvent;
 class EventNode {
