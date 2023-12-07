@@ -19,9 +19,18 @@ class Disk {
 public:
     // a disk is identified by its wait-queue and the name of
     // the disk -- FCFS, ST, etc.
-    Disk(Queue *waitQueue, std::string nameOfThisDisk);
-    retType processRequest(EventQueue *event, Request *req, ...)
-    retType processDiskDoneEvent(EventQueue *event, ...)
+    Disk(Queue *waitQueue, std::string nameOfThisDisk){
+        name = nameOfThisDisk;
+        waitQueue = waitQueue;
+    }
+    bool isFree() {return free;}
+    //retType processRequest(EventQueue *event, Request *req, ...)
+    //retType processDiskDoneEvent(EventQueue *event, ...)
+private:
+    std::string name;
+    Queue *waitQueue;
+    bool free = true;
+
 };
 
 class EventQueue {
@@ -29,9 +38,12 @@ public:
     bool empty() { return queue.empty(); }
     EventNode *getEvent() {
         EventNode *eNode = queue.top().second;
+        curTime = queue.top().first;
         queue.pop();
         return eNode;
     }
+
+    int getTime() const {return curTime;}
 
     void addRequest(int time, int track, int sector, int curTrack, int curSector){
         const int transferTime = 0.1;
@@ -54,6 +66,7 @@ public:
 
 private:
     std::priority_queue<std::pair<int, EventNode *>> queue;
+    int curTime = 0;
     int dist(int a, int b){
         return abs(a - b) * 3;
     }
@@ -72,7 +85,6 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     // Define basic variables
-    int initHeadPos = 0;
     int curTime = 0;
     int curTrack = 0;
     int curSector = 0;
@@ -112,7 +124,7 @@ int main(int argc, char *argv[]) {
     inputStream >> time;
     inputStream >> track;
     inputStream >> sector;
-    eQueue->addRequest(time, track, sector, curTrack);
+    eQueue->addRequest(time, track, sector, curTrack, curSector);
 
     // Set up first timer event
     eQueue->addTimerEvent(50);
@@ -120,6 +132,7 @@ int main(int argc, char *argv[]) {
     // Process all events
     while( !eQueue->empty() ) {
         EventNode *event = eQueue->getEvent();
+        curTime = eQueue->getTime();
         if (event->isRequestEvent()){
             for (Disk *d : disks){
                 d->processRequest(eQueue, event->getRequest()->getRequest());
@@ -127,9 +140,14 @@ int main(int argc, char *argv[]) {
             inputStream >> time;
             inputStream >> track;
             inputStream >> sector;
-            eQueue->addRequest(time, track, sector);
+            eQueue->addRequest(time, track, sector, curTrack, curSector);
+            curTrack = track;
+            curSector = sector;
+            // ADD A DDONE TO THE QUEUE HERE
         } else if (event->isTimerEvent()){
-
+            if (!eQueue->empty()){
+                eQueue->addTimerEvent(curTime + 50);
+            }
         } else{
 
         }
