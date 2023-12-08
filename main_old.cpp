@@ -15,20 +15,36 @@
 
 #include "eventNode.h"
 
+class EventQueue;
+
 class Disk {
 public:
     // a disk is identified by its wait-queue and the name of
     // the disk -- FCFS, ST, etc.
     Disk(Queue *waitQueue, std::string nameOfThisDisk){
         name = nameOfThisDisk;
-        waitQueue = waitQueue;
+        doneQueue = waitQueue;
     }
     bool isFree() {return free;}
-    //retType processRequest(EventQueue *event, Request *req, ...)
-    //retType processDiskDoneEvent(EventQueue *event, ...)
+    void processRequest(Request *req, int headTrack, int headSector){
+        if (free){
+            free = false;
+            waitQueue.emplace(req, headTrack, headSector);
+        } else{
+            // waitQueue->addRequest(req, headTrack, headSector);
+        }
+    }
+    void processDiskDoneEvent(Request *req, int headTrack, int headSector){
+        free = true;
+        Request* crap = waitQueue.front();
+        waitQueue.pop();
+        doneQueue->addRequest(crap, headTrack, headSector);
+    }
+
 private:
     std::string name;
-    Queue *waitQueue;
+    std::queue<Request *> waitQueue;
+    Queue *doneQueue;
     bool free = true;
 
 };
@@ -135,7 +151,7 @@ int main(int argc, char *argv[]) {
         curTime = eQueue->getTime();
         if (event->isRequestEvent()){
             for (Disk *d : disks){
-                d->processRequest(eQueue, event->getRequest()->getRequest());
+                d->processRequest(event->getRequest()->getRequest(), curTrack, curSector);
             }
             inputStream >> time;
             inputStream >> track;

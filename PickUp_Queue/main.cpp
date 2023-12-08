@@ -35,7 +35,7 @@ PickUpQueue *createPickUpQueue(int argc, char *argv[], int headPos) {
 }
 
 int main(int argc, char *argv[]) {
-    int headPos = 0;
+    int headPos = 40;
     auto *queue = createPickUpQueue(argc, argv, headPos);
     queue->print();
     delete queue;
