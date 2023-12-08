@@ -9,33 +9,32 @@
 
 class TimerEvent{
 public:
-    TimerEvent(int timer) {timerEvent = timer;}
-    int get() const { return timerEvent; }
+    TimerEvent(int time) {this->time = time;}
+    int get() const { return time; }
 
 private:
-    int timerEvent;
+    int time = -1;
 };
 class RequestEvent {
 public:
-    RequestEvent(Request *r) {request = r;}
+    RequestEvent(Request *r, int time) {request = r; this->time = time;}
     Request *getRequest() { return request; }
-    void setSeekTime(int n) {seekTime = n;}
-    void setRotationTime(int n) {rotationTime = n;}
-    void setTransferTime(int n) {transferTime = n;}
-    int getST() {return seekTime;}
-    int getRT() {return rotationTime;}
-    int getTT() {return transferTime;}
-    int getAT() {
-        return seekTime + rotationTime + transferTime;
-    }
+    int get() { return time; }
 
 private:
     Request *request = nullptr;
-    int seekTime = 0,
-    rotationTime = 0,
-    transferTime = 0;
+    int time = -1;
+
 };
-class DiskDoneEvent;
+class DiskDoneEvent{
+public:
+    DiskDoneEvent(int time){this->time = time;}
+    int get() {return time;}
+
+private:
+    int time = -1;
+
+};
 class EventNode {
 public:
     EventNode(): timerEvent(nullptr), requestEvent(nullptr), ddoneEvent(nullptr),
@@ -58,6 +57,12 @@ public:
     bool isTimerEvent() { return isTimer; }
     bool isRequestEvent() { return isRequest; }
     bool isDiskDoneEvent() { return isDDone; }
+    int getTime(){
+        if (isTimer) return timerEvent->get();
+        else if (isRequest) return requestEvent->get();
+        else if (isDDone) return ddoneEvent->get();
+        else return -1;
+    }
 
 private:
     TimerEvent *timerEvent;
