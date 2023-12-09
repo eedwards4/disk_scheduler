@@ -28,10 +28,15 @@ private:
 };
 class DiskDoneEvent{
 public:
-    DiskDoneEvent(int time){this->time = time;}
+    DiskDoneEvent(int time, int diskID, int arrivalTime)
+    {this->time = time; this->diskID = diskID; this->arrivalTime = arrivalTime;}
+    int getArrivalTime() {return arrivalTime;}
+    int getID() {return diskID;}
     int get() {return time;}
 
 private:
+    int arrivalTime = -1;
+    int diskID = -1;
     int time = -1;
 
 };
@@ -62,6 +67,12 @@ public:
         else if (isRequest) return requestEvent->get();
         else if (isDDone) return ddoneEvent->get();
         else return -1;
+    }
+    std::string type(){
+        if (isTimer) return "Timer";
+        else if (isRequest) return "Request";
+        else if (isDDone) return "DiskDone";
+        else return "Error";
     }
 
 private:

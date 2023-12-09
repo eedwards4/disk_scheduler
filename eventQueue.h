@@ -23,11 +23,13 @@ public:
         queue.pop();
         return tmp;
     }
+    int size() {return queue.size();}
+    EventNode *peek() {return queue.top().second;}
 
     // Setters
     void addRequest(ifstream &in);
     void addTimer(int time);
-    void addDDone(int time);
+    void addDDone(int time, int diskID, int arrivalTime);
 
 private:
     priority_queue<pair<int, EventNode*>, vector<pair<int, EventNode*>>, greater<>> queue; // NOTE: The int in the pair exists ONLY for sorting
