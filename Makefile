@@ -25,4 +25,4 @@ clook.x:
 	g++ -std=c++17 CommonFiles/Request.cpp CLook_Queue/main.cpp CLook_Queue/CLookQueue.cpp CLook_Queue/CLookQueueNode.cpp -o clook.x
 
 clean:
-	rm -f fcfs.x st.x pickup.x look.x clook.x sim.x
+	rm -f fcfs.x st.x pickup.x look.x clook.x sim.x | rm -r output
