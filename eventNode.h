@@ -5,6 +5,8 @@
 #ifndef DISKSIM_X_EVENTNODE_H
 #define DISKSIM_X_EVENTNODE_H
 
+#include <string>
+
 #include "CommonFiles/Request.hpp"
 
 class TimerEvent{
