@@ -32,6 +32,7 @@ void setUpDisks(vector<Disk*> &disks){
 }
 
 void setUpFiles(){
+    system("mkdir output");
     fstream fcfs("output/FCFS_output", ofstream::out | ofstream::trunc);
     fstream st("output/STRACK_output", ofstream::out | ofstream::trunc);
     fstream pickup("output/PICKUP_output", ofstream::out | ofstream::trunc);
