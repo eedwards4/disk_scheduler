@@ -1,5 +1,5 @@
 //
-// Created by evane on 12/8/2023.
+// Created by Ethan Edwards on 12/8/2023.
 //
 
 #ifndef DISKSIM_X_DISK_H
@@ -46,7 +46,7 @@ private:
     Queue *waitQueue;
     summary *sum = new summary(name);
 
-    void printRequest(int track, int sector, vector<float> info);
+    void printRequest(int order, int track, int sector, vector<float> info);
     vector<float> mathTime(int reqTime, int curTime, int reqTrack, int reqSector);
     vector<float> mathTimeToo(int reqTime, int curTime, int reqTrack, int reqSector);
     int dist(int start, int end);

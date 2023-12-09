@@ -5,10 +5,12 @@
 #include "Disk.h"
 
 int Disk::processRequest(Request *req, int curTime) {
+    int order = numProcessed + 1; numProcessed++;
+    req->setOrder(order);
     if (idle){ // Process the request immediately
         vector<float> info = mathTime(req->time(), curTime, req->track(), req->sector());
-        printRequest(req->track(), req->sector(), info);
-        numProcessed++; idle = false;
+        printRequest(req->order(), req->track(), req->sector(), info);
+        idle = false;
         headTrack = req->track();
         headSector = req->sector();
         // Add new data to summary
@@ -28,8 +30,8 @@ int Disk::processDiskDone(int curTime, int arrivalTime) {
     if (!waitQueue->empty()){
         Request *req = waitQueue->getRequest();
         vector<float> info = mathTimeToo(arrivalTime, curTime, req->track(), req->sector());
-        printRequest(req->track(), req->sector(), info);
-        numInQueue--; numProcessed++;
+        printRequest(req->order(), req->track(), req->sector(), info);
+        numInQueue--;
         headTrack = req->track();
         headSector = req->sector();
         // Add new data to summary
@@ -37,6 +39,7 @@ int Disk::processDiskDone(int curTime, int arrivalTime) {
         sum->newWT(info[3]);
         sum->newST(info[4]);
         sum->newInQ(numInQueue);
+        numProcessed++;
         return static_cast<int>(info[2]);
     } else{
         idle = true;
@@ -51,7 +54,7 @@ vector<float> Disk::mathTimeToo(int reqTime, int curTime, int reqTrack, int reqS
     float comp = init + dist(headTrack, reqTrack) + rotDist(headSector, reqSector) + 0.1;
     float wait = init - entr;
     float serv = comp - init;
-    float TIS = serv - wait;
+    float TIS = serv + wait;
     vector<float> tmp = {entr, init, comp, wait, serv, TIS};
     return tmp;
 }
@@ -61,7 +64,7 @@ vector<float> Disk::mathTime(int reqTime, int curTime, int reqTrack, int reqSect
     float comp = init + dist(headTrack, reqTrack) + rotDist(headSector, reqSector) + 0.1;
     float wait = init - entr;
     float serv = comp - init;
-    float TIS = serv - wait;
+    float TIS = serv + wait;
     vector<float> tmp = {entr, init, comp, wait, serv, TIS};
     return tmp;
 }
@@ -78,10 +81,10 @@ double Disk::rotDist(int start, int end) {
     }
 }
 
-void Disk::printRequest(int track, int sector, vector<float> info) {
+void Disk::printRequest(int order, int track, int sector, vector<float> info) {
     ofstream out(myFile, fstream::app);
     if (out.is_open()){
-        out << numProcessed << " ";
+        out << order << " ";
         out << track << " ";
         out << sector << " ";
         for (float i : info){

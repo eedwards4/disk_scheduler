@@ -6,16 +6,18 @@
 
 class Request {
 public:
-    Request(double rTime, int rTrack, int rSector);
+    Request(double rTime, int rTrack, int rSector, int rOrder = -1);
 
     int track();
     int sector();
     double time();
+    int order();
     void print();
+    void setOrder(int order) { _order = order; }
 
 private:
     double _time;
-    int _track, _sector;
+    int _track, _sector, _order;
 
 };
 
