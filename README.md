@@ -6,6 +6,7 @@ A simulated disk scheduler.
 <h2>Build instructions</h2>
 This project utilizes a makefile. The following commands make different scheduling algorithms.
 <ul>
+  <li><b>make sim.x OR make</b> : Full project with scheduler included, adds a timer, summary and more data about each disk read.</li>
   <li><b>make fcfs.x</b> : First come, first served</li>
   <li><b>make st.x</b> : Same track</li>
   <li><b>make pickup.x</b> : Pickup</li>
